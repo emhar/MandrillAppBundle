@@ -1,0 +1,24 @@
+{
+  "name": "emhar/mandrill-app-bundle",
+  "description": "Integrates Mandrill App Template Emails into Symfony3",
+  "keywords": ["mandrillapp", "mandrill", "mail","mailer","email"],
+  "homepage": "https://github.com/emhar/MandrillAppBundle",
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Emmanuel Harleaux",
+      "homepage": "https://github.com/emhar"
+    }
+  ],
+  "require": {
+    "php": ">=7.0",
+    "symfony/framework-bundle": "~3.0",
+    "mandrill/mandrill": "^1.0"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  }
+}

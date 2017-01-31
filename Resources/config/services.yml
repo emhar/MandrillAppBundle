@@ -1,0 +1,8 @@
+services:
+    emhar_mandrill_app.mailer:
+        class: Emhar\MandrillAppBundle\Mailer\Mailer
+        arguments: [ "%emhar_mandrill_app.api_key%", "%emhar_mandrill_app.test_email%" ]
+        calls:
+            - ['setLogger', ['@logger']]
+        tags:
+            - { name: monolog.logger, channel: mandrillapp }
