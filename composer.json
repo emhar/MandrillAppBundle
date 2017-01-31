@@ -22,6 +22,6 @@
     }
   },
   "autoload": {
-    "psr-0": { "Emhar\\MandrillAppBundle": "" }
+    "psr-4": { "Emhar\\MandrillAppBundle\\": "" }
   }
 }
