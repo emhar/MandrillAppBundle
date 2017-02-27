@@ -6,3 +6,10 @@ services:
             - ['setLogger', ['@logger']]
         tags:
             - { name: monolog.logger, channel: mandrillapp }
+    emhar_mandrill_app.template_creator:
+        class: Emhar\MandrillAppBundle\Template\TemplateCreator
+        arguments: [ "%emhar_mandrill_app.api_key%" ]
+        calls:
+            - ['setLogger', ['@logger']]
+        tags:
+            - { name: monolog.logger, channel: mandrillapp }
