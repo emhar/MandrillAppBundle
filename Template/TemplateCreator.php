@@ -26,6 +26,11 @@ class TemplateCreator
     protected $logger;
 
     /**
+     * @var array|null
+     */
+    protected $existingTemplates;
+
+    /**
      * @param string $apiKey
      */
     public function __construct(string $apiKey)
@@ -50,6 +55,16 @@ class TemplateCreator
      */
     public function createTemplate($from_email, $from_name, $name, $subject, $html)
     {
+        if (!$this->existingTemplates) {
+            $this->existingTemplates = $this->client->templates->getList();
+            $this->existingTemplates = array_map(function ($a) {
+                return $a['name'];
+            }, $this->existingTemplates);
+        }
+        if (in_array($name, $this->existingTemplates)) {
+            $result = $this->client->templates->update($name, $from_email, $from_name, $subject, $html);
+            return $result['slug'];
+        }
         $result = $this->client->templates->add($name, $from_email, $from_name, $subject, $html);
         return $result['slug'];
     }
