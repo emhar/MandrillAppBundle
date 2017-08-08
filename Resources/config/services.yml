@@ -1,14 +1,14 @@
 services:
     emhar_mandrill_app.mailer:
         class: Emhar\MandrillAppBundle\Mailer\Mailer
-        arguments: [ "%emhar_mandrill_app.api_key%", "%emhar_mandrill_app.test_email%" ]
+        arguments: [ "%emhar_mandrill_app.api_key%", "%emhar_mandrill_app.test_email%", "%emhar_mandrill_app.template_names%" ]
         calls:
             - ['setLogger', ['@logger']]
         tags:
             - { name: monolog.logger, channel: mandrillapp }
     emhar_mandrill_app.template_creator:
         class: Emhar\MandrillAppBundle\Template\TemplateCreator
-        arguments: [ "%emhar_mandrill_app.api_key%" ]
+        arguments: [ "%emhar_mandrill_app.api_key%", "%emhar_mandrill_app.template_names%" ]
         calls:
             - ['setLogger', ['@logger']]
         tags:

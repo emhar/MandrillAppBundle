@@ -26,16 +26,23 @@ class TemplateCreator
     protected $logger;
 
     /**
-     * @var array|null
+     * @var array
      */
     protected $existingTemplates;
 
     /**
-     * @param string $apiKey
+     * @var array
      */
-    public function __construct(string $apiKey)
+    protected $templateNames;
+
+    /**
+     * @param string $apiKey
+     * @param array $templateNames
+     */
+    public function __construct(string $apiKey, array $templateNames)
     {
         $this->client = new \Mandrill($apiKey);
+        $this->templateNames = $templateNames;
     }
 
     /**
@@ -55,17 +62,18 @@ class TemplateCreator
      */
     public function createTemplate($from_email, $from_name, $name, $subject, $html)
     {
+        $name = str_replace('-', '_', $name);
         if (!$this->existingTemplates) {
             $this->existingTemplates = $this->client->templates->getList();
             $this->existingTemplates = array_map(function ($a) {
                 return $a['name'];
             }, $this->existingTemplates);
         }
-        if (in_array($name, $this->existingTemplates)) {
-            $result = $this->client->templates->update($name, $from_email, $from_name, $subject, $html);
+        if (in_array($this->templateNames[$name], $this->existingTemplates)) {
+            $result = $this->client->templates->update($this->templateNames[$name], $from_email, $from_name, $subject, $html);
             return $result['slug'];
         }
-        $result = $this->client->templates->add($name, $from_email, $from_name, $subject, $html);
+        $result = $this->client->templates->add($this->templateNames[$name], $from_email, $from_name, $subject, $html);
         return $result['slug'];
     }
 }

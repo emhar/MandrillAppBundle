@@ -30,6 +30,7 @@ class EmharMandrillAppExtension extends Extension
         $config = $this->processConfiguration(new Configuration(), $configs);
         $container->setParameter('emhar_mandrill_app.api_key', $config['api_key']);
         $container->setParameter('emhar_mandrill_app.test_email', $config['test_email']);
+        $container->setParameter('emhar_mandrill_app.template_names', $config['template_names']);
         
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

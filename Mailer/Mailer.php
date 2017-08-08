@@ -33,13 +33,20 @@ class Mailer
     protected $testMail;
 
     /**
+     * @var array
+     */
+    protected $templateNames;
+
+    /**
      * @param string $apiKey
      * @param string|false $testMail
+     * @param array $templateNames
      */
-    public function __construct(string $apiKey, string $testMail = null)
+    public function __construct(string $apiKey, string $testMail = null, array $templateNames)
     {
         $this->client = new Mandrill($apiKey);
         $this->testMail = $testMail;
+        $this->templateNames = $templateNames;
     }
 
     /**
@@ -59,6 +66,7 @@ class Mailer
      */
     public function sendTemplateMail(string $email, string $templateName, array $parameters)
     {
+        $templateName = str_replace('-', '_', $templateName);
         try {
             if ($testEmail = $this->testMail) {
                 /* @var $testEmail string */
@@ -76,7 +84,8 @@ class Mailer
                 'global_merge_vars' => array_values($parameters)
             );
             /* @var $message \struct */
-            $result = $this->client->messages->sendTemplate($templateName, array(), $message);
+
+            $result = $this->client->messages->sendTemplate($this->templateNames[$templateName], array(), $message);
             if ($this->logger) {
                 $infoStr = '';
                 if (isset($result[0])) {

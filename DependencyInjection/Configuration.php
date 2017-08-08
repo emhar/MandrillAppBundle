@@ -33,6 +33,9 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('api_key')->isRequired()->end()
                 ->scalarNode('test_email')->defaultFalse()->end()
+                ->arrayNode('template_names')
+                    ->prototype('scalar')->end()
+                ->end()
             ->end()
 		;
 
