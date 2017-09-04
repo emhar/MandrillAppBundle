@@ -63,8 +63,9 @@ class Mailer
      * @param string $email
      * @param string $templateName
      * @param array $parameters
+     * @param File[]|null $attachmentFiles
      */
-    public function sendTemplateMail(string $email, string $templateName, array $parameters)
+    public function sendTemplateMail(string $email, string $templateName, array $parameters, array $attachmentFiles = null)
     {
         $templateName = str_replace('-', '_', $templateName);
         try {
@@ -83,6 +84,13 @@ class Mailer
                 'to' => $to,
                 'global_merge_vars' => array_values($parameters)
             );
+            foreach ($attachmentFiles ?? array() as $attachmentFile) {
+                $message['attachments'][] = array(
+                    'type' => $attachmentFile->getMimeType(),
+                    'name' => $attachmentFile->getBasename(),
+                    'content' => base64_encode(file_get_contents($attachmentFile->getPathname())),
+                );
+            }
             /* @var $message \struct */
 
             $result = $this->client->messages->sendTemplate($this->templateNames[$templateName], array(), $message);
@@ -104,5 +112,4 @@ class Mailer
             }
         }
     }
-
 }
