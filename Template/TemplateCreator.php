@@ -62,7 +62,6 @@ class TemplateCreator
      */
     public function createTemplate($from_email, $from_name, $name, $subject, $html)
     {
-        $name = str_replace('-', '_', $name);
         if (!$this->existingTemplates) {
             $this->existingTemplates = $this->client->templates->getList();
             $this->existingTemplates = array_map(function ($a) {
