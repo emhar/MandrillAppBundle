@@ -118,6 +118,9 @@ class Mailer
      *
      * @param string $email
      * @param string $html
+     * @param string $name
+     * @param string $fromEmail
+     * @param string $fromName
      * @param File[]|null $attachmentFiles
      */
     public function sendHTMLMail(string $email, string $html, string $name, string $fromEmail, string $fromName, array $attachmentFiles = null)
@@ -131,13 +134,12 @@ class Mailer
                 'email' => $email,
                 'type' => 'to'
             ));
-            array_walk($parameters, function (&$value, $key) {
-                $value = array('name' => $key, 'content' => $value);
-            });
             $message = array(
                 'to' => $to,
-                'global_merge_vars' => array_values($parameters),
-                'html' => $html
+                'html' => $html,
+                'subject' => $name,
+                'from_email' => $fromEmail,
+                'from_name' => $fromName
             );
             foreach ($attachmentFiles ?? array() as $attachmentFile) {
                 $message['attachments'][] = array(
