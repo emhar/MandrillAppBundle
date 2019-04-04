@@ -120,7 +120,7 @@ class Mailer
      * @param string $html
      * @param File[]|null $attachmentFiles
      */
-    public function sendHTMLMail(string $email, string $html, array $attachmentFiles = null)
+    public function sendHTMLMail(string $email, string $html, string $name, string $fromEmail, string $fromName, array $attachmentFiles = null)
     {
         try {
             if ($testEmail = $this->testMail) {
