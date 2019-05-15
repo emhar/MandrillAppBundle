@@ -13,8 +13,11 @@
   ],
   "require": {
     "php": ">=7.0",
-    "symfony/framework-bundle": "~3.0",
-    "mandrill/mandrill": "^1.0"
+    "symfony/config": "^3.0|^4.0",
+    "symfony/dependency-injection": "^3.0|^4.0",
+    "symfony/http-kernel": "^3.0|^4.0",
+    "mandrill/mandrill": "^1.0",
+    "psr/log": "*"
   },
   "extra": {
     "branch-alias": {
