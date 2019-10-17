@@ -69,9 +69,11 @@ class Mailer
     {
         $templateName = str_replace('-', '_', $templateName);
         try {
+            $subject = '';
             if ($testEmail = $this->testMail) {
                 /* @var $testEmail string */
                 $email = $testEmail;
+                $subject .= '(' . $email . ')';
             }
             $to = array(array(
                 'email' => $email,
@@ -84,6 +86,9 @@ class Mailer
                 'to' => $to,
                 'global_merge_vars' => array_values($parameters)
             );
+            if ($this->testMail) {
+                $message['subject'] = $subject;
+            }
             foreach ($attachmentFiles ?? array() as $attachmentFile) {
                 $message['attachments'][] = array(
                     'type' => $attachmentFile->getMimeType(),
@@ -126,8 +131,10 @@ class Mailer
     public function sendHTMLMail(string $email, string $html, string $name, string $fromEmail, string $fromName, array $attachmentFiles = null)
     {
         try {
+            $subject = $name;
             if ($testEmail = $this->testMail) {
                 /* @var $testEmail string */
+                $subject .= '(' . $email . ')';
                 $email = $testEmail;
             }
             $to = array(array(
@@ -137,7 +144,7 @@ class Mailer
             $message = array(
                 'to' => $to,
                 'html' => $html,
-                'subject' => $name,
+                'subject' => $subject,
                 'from_email' => $fromEmail,
                 'from_name' => $fromName
             );
