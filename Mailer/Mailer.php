@@ -71,9 +71,9 @@ class Mailer
         try {
             $subject = '';
             if ($testEmail = $this->testMail) {
+                $subject .= '(' . $email . ')';
                 /* @var $testEmail string */
                 $email = $testEmail;
-                $subject .= '(' . $email . ')';
             }
             $to = array(array(
                 'email' => $email,
