@@ -13,6 +13,7 @@ namespace Emhar\MandrillAppBundle\Mailer;
 
 use Mandrill;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\File\File;
 
 class Mailer
 {
@@ -63,7 +64,7 @@ class Mailer
      * @param string $email
      * @param string $templateName
      * @param array $parameters
-     * @param File[]|null $attachmentFiles
+     * @param File[]|array|null $attachmentFiles item can be File or an array with Mandrill app structure
      */
     public function sendTemplateMail(string $email, string $templateName, array $parameters, array $attachmentFiles = null)
     {
@@ -90,11 +91,15 @@ class Mailer
                 $message['subject'] = $subject;
             }
             foreach ($attachmentFiles ?? array() as $attachmentFile) {
-                $message['attachments'][] = array(
-                    'type' => $attachmentFile->getMimeType(),
-                    'name' => $attachmentFile->getBasename(),
-                    'content' => base64_encode(file_get_contents($attachmentFile->getPathname())),
-                );
+                if ($attachmentFile instanceof File) {
+                    $message['attachments'][] = array(
+                        'type' => $attachmentFile->getMimeType(),
+                        'name' => $attachmentFile->getBasename(),
+                        'content' => base64_encode(file_get_contents($attachmentFile->getPathname())),
+                    );
+                } else {
+                    $message['attachments'][] = $attachmentFile;
+                }
             }
             /* @var $message \struct */
 
@@ -126,7 +131,7 @@ class Mailer
      * @param string $name
      * @param string $fromEmail
      * @param string $fromName
-     * @param File[]|null $attachmentFiles
+     * @param File[]|array|null $attachmentFiles item can be File or an array with Mandrill app structure
      */
     public function sendHTMLMail(string $email, string $html, string $name, string $fromEmail, string $fromName, array $attachmentFiles = null)
     {
@@ -149,11 +154,15 @@ class Mailer
                 'from_name' => $fromName
             );
             foreach ($attachmentFiles ?? array() as $attachmentFile) {
-                $message['attachments'][] = array(
-                    'type' => $attachmentFile->getMimeType(),
-                    'name' => $attachmentFile->getBasename(),
-                    'content' => base64_encode(file_get_contents($attachmentFile->getPathname())),
-                );
+                if ($attachmentFile instanceof File) {
+                    $message['attachments'][] = array(
+                        'type' => $attachmentFile->getMimeType(),
+                        'name' => $attachmentFile->getBasename(),
+                        'content' => base64_encode(file_get_contents($attachmentFile->getPathname())),
+                    );
+                } else {
+                    $message['attachments'][] = $attachmentFile;
+                }
             }
             /* @var $message \struct */
 
