@@ -90,11 +90,16 @@ class Mailer
             if ($this->testMail) {
                 $message['subject'] = $subject;
             }
-            foreach ($attachmentFiles ?? array() as $attachmentFile) {
+            foreach ($attachmentFiles ?? array() as $name => $attachmentFile) {
+                if (is_int($name)) {
+                    $name = $attachmentFile->getBasename();
+                } else {
+                    $name .= '.' . $attachmentFile->getExtension();
+                }
                 if ($attachmentFile instanceof File) {
                     $message['attachments'][] = array(
                         'type' => $attachmentFile->getMimeType(),
-                        'name' => $attachmentFile->getBasename(),
+                        'name' => $name,
                         'content' => base64_encode(file_get_contents($attachmentFile->getPathname())),
                     );
                 } else {
@@ -153,11 +158,16 @@ class Mailer
                 'from_email' => $fromEmail,
                 'from_name' => $fromName
             );
-            foreach ($attachmentFiles ?? array() as $attachmentFile) {
+            foreach ($attachmentFiles ?? array() as $name => $attachmentFile) {
+                if (is_int($name)) {
+                    $name = $attachmentFile->getBasename();
+                } else {
+                    $name .= '.' . $attachmentFile->getExtension();
+                }
                 if ($attachmentFile instanceof File) {
                     $message['attachments'][] = array(
                         'type' => $attachmentFile->getMimeType(),
-                        'name' => $attachmentFile->getBasename(),
+                        'name' => $name,
                         'content' => base64_encode(file_get_contents($attachmentFile->getPathname())),
                     );
                 } else {
