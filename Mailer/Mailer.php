@@ -93,7 +93,7 @@ class Mailer
             foreach ($attachmentFiles ?? array() as $fileName => $attachmentFile) {
                 if (is_int($fileName)) {
                     $fileName = $attachmentFile->getBasename();
-                } else {
+                } elseif($attachmentFile instanceof File) {
                     $fileName .= '.' . $attachmentFile->getExtension();
                 }
                 if ($attachmentFile instanceof File) {
