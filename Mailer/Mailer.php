@@ -90,16 +90,16 @@ class Mailer
             if ($this->testMail) {
                 $message['subject'] = $subject;
             }
-            foreach ($attachmentFiles ?? array() as $name => $attachmentFile) {
-                if (is_int($name)) {
-                    $name = $attachmentFile->getBasename();
+            foreach ($attachmentFiles ?? array() as $fileName => $attachmentFile) {
+                if (is_int($fileName)) {
+                    $fileName = $attachmentFile->getBasename();
                 } else {
-                    $name .= '.' . $attachmentFile->getExtension();
+                    $fileName .= '.' . $attachmentFile->getExtension();
                 }
                 if ($attachmentFile instanceof File) {
                     $message['attachments'][] = array(
                         'type' => $attachmentFile->getMimeType(),
-                        'name' => $name,
+                        'name' => $fileName,
                         'content' => base64_encode(file_get_contents($attachmentFile->getPathname())),
                     );
                 } else {
@@ -158,16 +158,16 @@ class Mailer
                 'from_email' => $fromEmail,
                 'from_name' => $fromName
             );
-            foreach ($attachmentFiles ?? array() as $name => $attachmentFile) {
+            foreach ($attachmentFiles ?? array() as $fileName => $attachmentFile) {
                 if (is_int($name)) {
-                    $name = $attachmentFile->getBasename();
+                    $fileName = $attachmentFile->getBasename();
                 } else {
-                    $name .= '.' . $attachmentFile->getExtension();
+                    $fileName .= '.' . $attachmentFile->getExtension();
                 }
                 if ($attachmentFile instanceof File) {
                     $message['attachments'][] = array(
                         'type' => $attachmentFile->getMimeType(),
-                        'name' => $name,
+                        'name' => $fileName,
                         'content' => base64_encode(file_get_contents($attachmentFile->getPathname())),
                     );
                 } else {
